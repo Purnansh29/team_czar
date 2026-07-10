@@ -1,12 +1,11 @@
 import React from "react";
 
 /**
- * Small animated orb: pulses while the mic is listening, glows while the
- * assistant is speaking, sits still and dim otherwise. Pure CSS animation
- * (classes toggled via props) — see content.css for the keyframes.
+ * Animated orb: pulses red while mic is listening, glows blue while speaking,
+ * glows green when wake word "Hey Jarvis" is detected.
  */
-export default function VoiceOrb({ listening, speaking }) {
-  const state = speaking ? "speaking" : listening ? "listening" : "idle";
+export default function VoiceOrb({ listening, speaking, wakeActive }) {
+  const state = wakeActive ? "wake" : speaking ? "speaking" : listening ? "listening" : "idle";
   return (
     <div className={`jarvis-orb jarvis-orb--${state}`} aria-hidden="true">
       <div className="jarvis-orb__core" />

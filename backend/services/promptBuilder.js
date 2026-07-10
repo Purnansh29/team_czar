@@ -24,9 +24,13 @@ function formatHistory(history = []) {
 }
 
 function pageBlock(page) {
-  const trimmedText = (page?.textContent || "").slice(0, 12000); // keep prompt size sane
+  // llama3.2:1b has a 128k context window; 8000 chars gives great coverage
+  // while keeping inference fast on most hardware.
+  const trimmedText = (page?.textContent || "").slice(0, 8000);
   return `Page title: ${page?.title || "(untitled)"}
 Page URL: ${page?.url || "(unknown)"}
+Site: ${page?.siteName || "(unknown)"}
+Word count: ~${page?.wordCount || "unknown"}
 Page text:
 """
 ${trimmedText}

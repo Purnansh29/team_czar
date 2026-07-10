@@ -10,8 +10,12 @@ export default function ChatHistory({ history, busy }) {
   if (history.length === 0 && !busy) {
     return (
       <div className="jarvis-chat jarvis-chat--empty">
-        <p>Ask me to summarize this page, explain a paragraph, or read it aloud.</p>
-        <p className="jarvis-chat--hint">Try: "Summarize this page" or "Explain this article"</p>
+        <span className="jarvis-chat--empty-icon">🤖</span>
+        <p>I'm Jarvis, your AI reading companion.</p>
+        <p className="jarvis-chat--hint">
+          Say <strong>"Hey Jarvis"</strong> or type below to get started.
+          I can summarize, explain, translate, and read this page aloud.
+        </p>
       </div>
     );
   }
