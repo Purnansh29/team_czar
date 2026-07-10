@@ -9,23 +9,30 @@ import { askJarvis, translateSelection } from "./lib/api";
 import { getPageState, savePageState } from "../shared/storage";
 
 export default function Panel({ page, onClose, initialAction }) {
-  const [history, setHistory] = useState([]);
-  const [transcript, setTranscript] = useState("");
-  const [inputValue, setInputValue] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [summary, setSummary] = useState(null);
+  const [history, setHistory]           = useState([]);
+  const [transcript, setTranscript]     = useState("");
+  const [inputValue, setInputValue]     = useState("");
+  const [busy, setBusy]                 = useState(false);
+  const [summary, setSummary]           = useState(null);
   const [activeParagraph, setActiveParagraph] = useState(null);
-  const [error, setError] = useState(null);
+  const [error, setError]               = useState(null);
+  const [wakeFlash, setWakeFlash]       = useState(false); // brief badge on wake
 
   const historyRef = useRef(history);
   historyRef.current = history;
 
-  // ── Speech Recognition declared first so callbacks below can reference it ──
+  // ── Speech Recognition (declared first — used in callbacks below) ──
   const recognition = useSpeechRecognition({
     onTranscript: (t) => {
       setTranscript(t);
       const action = matchVoiceCommand(t);
       handleVoiceCommandRef.current?.(action, t);
+    },
+    onWakeWord: () => {
+      // Auto-activate mic on wake word; show brief badge
+      recognition.start();
+      setWakeFlash(true);
+      setTimeout(() => setWakeFlash(false), 2200);
     },
   });
 
@@ -234,6 +241,9 @@ export default function Panel({ page, onClose, initialAction }) {
           <span className="jarvis-panel__site">{page.siteName}</span>
         </div>
         <div className="jarvis-panel__header-right">
+          {wakeFlash && (
+            <span className="jarvis-panel__wake-badge" key={Date.now()}>👋 Hey Jarvis!</span>
+          )}
           <span className="jarvis-panel__word-count">
             {page.wordCount ? `~${page.wordCount.toLocaleString()} words` : ""}
           </span>
