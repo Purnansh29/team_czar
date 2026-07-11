@@ -1,23 +1,38 @@
 import React, { useState, useRef, useEffect } from "react";
+import './LanguageSelector.css';
 import { LANGUAGES, getLang } from "../lib/languages";
 
 /**
  * LanguageSelector — beautiful dropdown for all 20 supported languages.
  * Shows flag + short code on the button, full list in the dropdown.
+ *
+ * NOTE: This component runs inside a Shadow DOM, so we use composedPath()
+ * for outside-click detection instead of contains(), which fails across
+ * shadow boundaries.
  */
 export default function LanguageSelector({ lang, onSwitch }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   const current = getLang(lang);
 
-  // Close when clicking outside
+  // Close when clicking outside — Shadow DOM safe
   useEffect(() => {
     if (!open) return;
     const handler = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+      // composedPath() traverses shadow boundaries correctly
+      const path = e.composedPath ? e.composedPath() : [e.target];
+      if (ref.current && !path.includes(ref.current)) {
+        setOpen(false);
+      }
     };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
+    // Use setTimeout so this listener isn't triggered by the same click that opened it
+    const timer = setTimeout(() => {
+      document.addEventListener("mousedown", handler, true);
+    }, 0);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener("mousedown", handler, true);
+    };
   }, [open]);
 
   const handleSelect = (code) => {
@@ -30,7 +45,10 @@ export default function LanguageSelector({ lang, onSwitch }) {
       <button
         id="jarvis-lang-btn"
         className="jarvis-btn jarvis-btn--lang jarvis-lang-trigger"
-        onClick={() => setOpen((o) => !o)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen((o) => !o);
+        }}
         title={`Language: ${current.name} — click to change`}
         aria-haspopup="listbox"
         aria-expanded={open}
@@ -50,7 +68,10 @@ export default function LanguageSelector({ lang, onSwitch }) {
                 className={`jarvis-lang-option ${l.code === lang ? "is-active" : ""}`}
                 role="option"
                 aria-selected={l.code === lang}
-                onClick={() => handleSelect(l.code)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSelect(l.code);
+                }}
               >
                 <span className="jarvis-lang-option__flag">{l.flag}</span>
                 <span className="jarvis-lang-option__info">
