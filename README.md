@@ -8,12 +8,18 @@
 
 [![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white)](#-installation)
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-34A853?style=for-the-badge&logo=googlechrome&logoColor=white)](#-installation)
-[![Ollama AI](https://img.shields.io/badge/Ollama-llama3.2:1b-8E75B2?style=for-the-badge&logo=ollama&logoColor=white)](#-tech-stack)
+[![Ollama AI](https://img.shields.io/badge/Ollama-llama3.2%3A1b-8E75B2?style=for-the-badge&logo=ollama&logoColor=white)](#-tech-stack)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](#-tech-stack)
 [![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=node.js&logoColor=white)](#-tech-stack)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](#-license)
 
-**[Demo Video](#) · [Live Screenshots](#-screenshots) · [Installation](#-installation) · [Report Bug](#)**
+<br/>
+
+[![Stars](https://img.shields.io/github/stars/dhyeyptl10/jarvis-ai-companion?style=social)](#)
+[![Forks](https://img.shields.io/github/forks/dhyeyptl10/jarvis-ai-companion?style=social)](#)
+[![Last Commit](https://img.shields.io/github/last-commit/dhyeyptl10/jarvis-ai-companion?color=8E75B2)](#)
+
+**[Demo Video](#-demo) · [Screenshots](#-screenshots) · [Installation](#-installation) · [Report a Bug](#)**
 
 </div>
 
@@ -27,17 +33,18 @@
 - [Features](#-features)
 - [Screenshots](#-screenshots)
 - [Demo](#-demo)
-- [How It Works](#-how-it-works)
-- [Architecture](#-architecture)
-- [Tech Stack](#-tech-stack)
+- [How It Works](#️-how-it-works)
+- [Architecture](#️-architecture)
+- [Tech Stack](#️-tech-stack)
 - [Folder Structure](#-folder-structure)
-- [Voice Commands](#-voice-commands)
+- [Voice Commands](#️-voice-commands)
 - [Installation](#-installation)
 - [Environment Variables](#-environment-variables)
 - [Privacy & Security](#-privacy--security)
 - [Why Jarvis Is Different](#-why-jarvis-is-different)
 - [Challenges We Solved](#-challenges-we-solved)
-- [Future Scope](#-future-scope)
+- [Roadmap](#-roadmap)
+- [Contributing](#-contributing)
 - [Contributors](#-contributors)
 - [Acknowledgements](#-acknowledgements)
 - [License](#-license)
@@ -48,7 +55,7 @@
 
 **Jarvis : AI Companion** is a Manifest V3 Chrome extension that turns any webpage into a conversation. Instead of the usual "AI that knows everything but nothing about your screen," Jarvis reads **only the page you have open**, extracts the meaningful content with Mozilla's Readability engine, and lets you ask questions about it — by voice or text.
 
-It's an evolution of an earlier vanilla-JS voice assistant (`Jarvis-With-JavaScript`), rebuilt from the ground up into a production-grade extension with a React UI, a Node/Express backend, and a **100% local, private Ollama model (llama3.2:1b)** as the reasoning engine.
+It's an evolution of an earlier vanilla-JS voice assistant (`Jarvis-With-JavaScript`), rebuilt from the ground up into a production-grade extension with a React UI, a Node/Express backend, and a **100% local, private Ollama model (`llama3.2:1b`)** as the reasoning engine — nothing you read or say ever leaves your machine.
 
 > 💡 **In one line:** *Highlight less, understand more — talk to the page instead of copy-pasting it into a chatbot.*
 
@@ -78,7 +85,7 @@ Jarvis removes the copy-paste step entirely by living **inside the page**:
 | 📚 **Reading assistant** | Summarize, explain paragraphs, explain code, read aloud, translate |
 | 🧠 **Conversation memory** | Per-URL chat history and reading progress, saved locally |
 | 🔊 **Speech output** | Responses are read back in English or Hindi |
-| 🔐 **100% Local AI** | No cloud APIs. Powered by Ollama on your own machine |
+| 🔐 **100% local AI** | No cloud APIs — powered by Ollama running on your own machine |
 
 ---
 
@@ -89,12 +96,12 @@ Jarvis removes the copy-paste step entirely by living **inside the page**:
 <td width="50%">
 
 **🎯 Core Assistant**
-- 🎙️ Voice Commands
-- 🗣️ Speech Recognition
-- 🔊 Speech Synthesis
-- 📝 Page Summarization
-- 📖 Paragraph Explanation
-- 💻 Code Explanation
+- 🎙️ Voice commands
+- 🗣️ Speech recognition
+- 🔊 Speech synthesis
+- 📝 Page summarization
+- 📖 Paragraph explanation
+- 💻 Code explanation
 - 🌐 Translation
 
 </td>
@@ -102,11 +109,11 @@ Jarvis removes the copy-paste step entirely by living **inside the page**:
 
 **🏗️ Platform & Engineering**
 - 🧩 Chrome Extension (MV3)
-- 🌓 Shadow DOM Isolation
+- 🌓 Shadow DOM isolation
 - ⚛️ React UI
-- ✨ Ollama Local AI Backend
-- 🔍 Readability Parser
-- 🎨 Dark Glassmorphism UI
+- ✨ Ollama local AI backend
+- 🔍 Readability parser
+- 🎨 Dark glassmorphism UI
 
 </td>
 </tr>
@@ -114,18 +121,18 @@ Jarvis removes the copy-paste step entirely by living **inside the page**:
 <td width="50%">
 
 **🧠 Memory & Progress**
-- 💾 Conversation Memory
-- 📍 Reading Progress Tracking
-- 🗂️ Per-Page Persistence
+- 💾 Conversation memory
+- 📍 Reading progress tracking
+- 🗂️ Per-page persistence
 
 </td>
 <td width="50%">
 
 **🌍 Language & Trust**
-- 🇮🇳 Hindi Support
-- 🇬🇧 English Support
-- 🔐 100% Offline AI Processing
-- 🕵️ Privacy First — No Tracking
+- 🇮🇳 Hindi support
+- 🇬🇧 English support
+- 🔐 100% offline AI processing
+- 🕵️ Privacy first — no tracking
 
 </td>
 </tr>
@@ -139,15 +146,15 @@ Jarvis removes the copy-paste step entirely by living **inside the page**:
 
 | Extension Popup | Main Panel | Voice Assistant Active |
 |:---:|:---:|:---:|
-| *[screenshot placeholder]* | *[screenshot placeholder]* | *[screenshot placeholder]* |
+| *add screenshot* | *add screenshot* | *add screenshot* |
 
 | Reading Mode | Code Explanation | Conversation View | Dark Theme |
 |:---:|:---:|:---:|:---:|
-| *[screenshot placeholder]* | *[screenshot placeholder]* | *[screenshot placeholder]* | *[screenshot placeholder]* |
+| *add screenshot* | *add screenshot* | *add screenshot* | *add screenshot* |
 
 </div>
 
-> 📌 Replace the placeholders above with actual screenshots/GIFs before submitting.
+> 📌 Replace the placeholders above with actual screenshots or GIFs before publishing. A 1280×800 PNG works best for the Chrome Web Store; drop GIFs straight into this table for extra motion.
 
 ---
 
@@ -157,7 +164,7 @@ Jarvis removes the copy-paste step entirely by living **inside the page**:
 
 | 🎞️ Demo GIF | 📹 Demo Video | 📊 Presentation | 🏗️ Architecture Doc |
 |:---:|:---:|:---:|:---:|
-| *[link placeholder]* | *[link placeholder]* | *[link placeholder]* | *[link placeholder]* |
+| *add link* | *add link* | *add link* | *add link* |
 
 </div>
 
@@ -178,7 +185,7 @@ flowchart TD
     D --> E[🔁 Background Service Worker Relay]
     E --> F[🖥️ Node/Express Backend]
     F --> G[🧠 Prompt Builder]
-    G --> H[✨ Local Ollama (llama3.2:1b)]
+    G --> H["✨ Local Ollama (llama3.2:1b)"]
     H --> I[💬 Response Returned]
     I --> J[🔊 Speech Synthesis + Chat UI]
 ```
@@ -193,23 +200,22 @@ flowchart LR
         CS[Content Script<br/>Shadow DOM + React Panel]
         BG[Background Service Worker]
         PU[Popup UI]
-        ST[(chrome.storage.local)]
+        ST[("chrome.storage.local")]
     end
 
     subgraph Server["🖥️ Backend Server"]
         EX[Express Server]
         PB[Prompt Builder]
-        GM[Ollama Service]
+        GM[Ollama Service Wrapper]
     end
 
-    subgraph External["☁️ Local AI"]
-        GEM[Ollama - llama3.2:1b]
+    subgraph Local["💻 Local Machine — No Cloud"]
+        GEM["🧠 Ollama Runtime<br/>llama3.2:1b"]
     end
 
     CS <--> BG
     PU <--> BG
     CS <--> ST
-    CS <-->|Web Speech API| CS
     BG <--> EX
     EX --> PB --> GM --> GEM
     GEM --> GM --> EX --> BG --> CS
@@ -219,6 +225,7 @@ flowchart LR
 
 - `Ctrl+Shift+J` → `chrome.commands` fires in `background.js` → `chrome.tabs.sendMessage(tabId, { type: "JARVIS_TOGGLE_PANEL" })` → `content/index.jsx` toggles the panel.
 - The panel calls the backend via `chrome.runtime.sendMessage({ type: "JARVIS_API_REQUEST", path, payload })`, which `background.js` relays with `fetch()` — keeping the backend URL in one place and avoiding page-level CSP/CORS issues that a direct content-script `fetch()` could hit.
+- Voice capture (`Web Speech API`) runs entirely inside the content script's Shadow DOM context and never crosses the message bus until a final transcript is ready to send.
 
 ---
 
@@ -228,11 +235,11 @@ flowchart LR
 <tr><th>Category</th><th>Technologies</th></tr>
 <tr><td><strong>Frontend</strong></td><td>React 18, Vite, Shadow DOM, CSS (Glassmorphism)</td></tr>
 <tr><td><strong>Backend</strong></td><td>Node.js, Express</td></tr>
-<tr><td><strong>AI</strong></td><td>Ollama (llama3.2:1b) running locally</td></tr>
+<tr><td><strong>AI</strong></td><td>Ollama (<code>llama3.2:1b</code>) running locally</td></tr>
 <tr><td><strong>Chrome APIs</strong></td><td>Manifest V3, chrome.storage.local, chrome.commands, chrome.runtime, chrome.tabs</td></tr>
 <tr><td><strong>Browser APIs</strong></td><td>Web Speech API (Recognition + Synthesis)</td></tr>
 <tr><td><strong>Libraries</strong></td><td>Mozilla Readability</td></tr>
-<tr><td><strong>Dev Tools</strong></td><td>Vite (content + popup configs), npm</td></tr>
+<tr><td><strong>Dev Tools</strong></td><td>Vite (separate content + popup configs), npm</td></tr>
 </table>
 
 ---
@@ -292,7 +299,7 @@ jarvis-ai-companion/
 
 ### 1️⃣ Download Ollama
 
-Download and install [Ollama](https://ollama.com/), then run:
+Download and install [Ollama](https://ollama.com/), then pull and run the model:
 ```bash
 ollama run llama3.2:1b
 ```
@@ -332,20 +339,20 @@ npm run dev:content   # rebuilds dist/content.js on change
 npm run dev:popup     # rebuilds dist/popup.html on change
 ```
 
-> Reload the extension from `chrome://extensions` after each content-script rebuild (Chrome doesn't hot-reload content scripts).
+> Reload the extension from `chrome://extensions` after each content-script rebuild — Chrome doesn't hot-reload content scripts.
 
 ---
 
 ## 🔑 Environment Variables
 
-`backend/.env` (Optional)
+`backend/.env` (optional — copy from `.env.example`)
 
-| Variable | Description |
-|---|---|
-| `OLLAMA_URL` | Ollama URL, defaults to `http://localhost:11434` |
-| `OLLAMA_MODEL` | Model name, defaults to `llama3.2:1b` |
-| `PORT` | Server port, defaults to `5000` |
-| `CORS_ORIGIN` | Allowed origin(s), `*` for local development |
+| Variable | Description | Default |
+|---|---|---|
+| `OLLAMA_URL` | Base URL of your local Ollama server | `http://localhost:11434` |
+| `OLLAMA_MODEL` | Model name to use for inference | `llama3.2:1b` |
+| `PORT` | Port the Express server listens on | `5000` |
+| `CORS_ORIGIN` | Allowed origin(s) for the extension to call the backend | `*` (local dev) |
 
 ---
 
@@ -357,7 +364,7 @@ npm run dev:popup     # rebuilds dist/popup.html on change
 
 🧭 **No tracking** — no analytics, no telemetry, no hidden data collection.
 
-☁️ **100% Local AI** — your data never leaves your computer. Powered by local Ollama processing.
+💻 **100% local AI** — your data never leaves your computer. All inference runs through your local Ollama instance.
 
 💾 **Local storage only** — all conversation history and reading progress stay in `chrome.storage.local` on your machine.
 
@@ -372,7 +379,7 @@ npm run dev:popup     # rebuilds dist/popup.html on change
 | Aspect | Normal ChatGPT | Traditional Extensions | Copy-Paste Workflow | **Jarvis** |
 |---|:---:|:---:|:---:|:---:|
 | Understands current page | ❌ | ⚠️ Partial | ⚠️ Manual | ✅ |
-| 100% Local Processing | ❌ | ❌ | ❌ | ✅ |
+| 100% local processing | ❌ | ❌ | ❌ | ✅ |
 | Voice-first interaction | ❌ | ❌ | ❌ | ✅ |
 | Reads answers aloud | ❌ | ❌ | ❌ | ✅ |
 | Remembers reading progress | ❌ | ❌ | ❌ | ✅ |
@@ -385,24 +392,36 @@ npm run dev:popup     # rebuilds dist/popup.html on change
 
 - **Manifest V3 constraints** — designing background logic around a non-persistent service worker
 - **Shadow DOM isolation** — preventing host-page CSS/JS from leaking into or out of the panel
-- **Speech recognition reliability** — handling auto-restart-on-end, Chrome silences, and user intents (listeningRef hooks)
-- **Ollama Integration** — switching from a cloud API to a local model while managing context limits (llama3.2:1b)
+- **Speech recognition reliability** — handling auto-restart-on-end, Chrome silences, and user intents (`listeningRef` hooks)
+- **Ollama integration** — switching from a cloud API to a local model while managing context limits (`llama3.2:1b`)
 - **Readability parsing** — cleanly extracting paragraphs and code blocks from arbitrary page structures
 - **CSP & CORS** — routing all API calls through the background service worker instead of the content script
 - **Conversation memory** — designing a per-URL storage schema that scales in `chrome.storage.local`
 
 ---
 
-## 🔮 Future Scope
+## 🔮 Roadmap
 
-- 📄 PDF Reader integration
-- 🔍 OCR for scanned/image-based content
-- 🌍 Multi-language support beyond English/Hindi (Translation models)
-- 📝 Notes & Flashcards generation
-- 🎓 AI Tutor mode
-- 📚 Multi-page/session summaries
-- 📱 Mobile browser support
-- ☁️ Cross-device browser sync
+- [ ] 📄 PDF reader integration
+- [ ] 🔍 OCR for scanned/image-based content
+- [ ] 🌍 Multi-language support beyond English/Hindi (translation models)
+- [ ] 📝 Notes & flashcards generation
+- [ ] 🎓 AI tutor mode
+- [ ] 📚 Multi-page/session summaries
+- [ ] 📱 Mobile browser support
+- [ ] ☁️ Cross-device sync (opt-in, still local-first)
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repo and create your branch: `git checkout -b feature/my-feature`
+2. Make your changes and commit: `git commit -m "Add my feature"`
+3. Push to your fork and open a Pull Request
+
+Please keep PRs focused and describe the "why" alongside the "what" in your description.
 
 ---
 
@@ -410,9 +429,9 @@ npm run dev:popup     # rebuilds dist/popup.html on change
 
 <div align="center">
 
-| [DHYEY](https://github.com/dhyeyptl10) |
-|:---:|
-| 🧠 Creator & Developer |
+| [<img src="https://github.com/dhyeyptl10.png" width="80" style="border-radius:50%"/><br/>**Dhyey**](https://github.com/dhyeyptl10) | [<img src="https://github.com/Het510.png" width="80" style="border-radius:50%"/><br/>**Het**](https://github.com/Het510) | [<img src="https://github.com/Purnansh29.png" width="80" style="border-radius:50%"/><br/>**Purnansh**](https://github.com/Purnansh29) | [<img src="https://github.com/sachinptl10.png" width="80" style="border-radius:50%"/><br/>**Sachin**](https://github.com/sachinptl10) |
+|:---:|:---:|:---:|:---:|
+| 🧠 Creator & Developer | 🤝 Collaborator | 🤝 Collaborator | 🤝 Collaborator |
 
 </div>
 
