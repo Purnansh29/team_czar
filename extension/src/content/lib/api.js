@@ -6,15 +6,34 @@
 //   - a page's CSP can't block the request (content-script fetches are
 //     subject to the host page's CSP; background fetches are not)
 
+// ── Context guard ──────────────────────────────────────────────────────────
+// Prevents "Extension context invalidated" errors when the service worker has
+// been reloaded but this old content-script instance is still alive on a tab.
+function isContextValid() {
+  try {
+    return Boolean(chrome?.runtime?.id);
+  } catch {
+    return false;
+  }
+}
+
 function callBackground(type, payload) {
   return new Promise((resolve, reject) => {
-    chrome.runtime.sendMessage({ type, ...payload }, (response) => {
-      if (chrome.runtime.lastError) {
-        reject(new Error(chrome.runtime.lastError.message));
-        return;
-      }
-      resolve(response);
-    });
+    if (!isContextValid()) {
+      reject(new Error("Extension was reloaded — please refresh this tab."));
+      return;
+    }
+    try {
+      chrome.runtime.sendMessage({ type, ...payload }, (response) => {
+        if (chrome.runtime.lastError) {
+          reject(new Error(chrome.runtime.lastError.message));
+          return;
+        }
+        resolve(response);
+      });
+    } catch (err) {
+      reject(new Error("Extension context invalidated — please refresh this tab."));
+    }
   });
 }
 

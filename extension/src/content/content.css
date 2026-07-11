@@ -632,3 +632,143 @@
   opacity: 0.5;
   padding: 6px 8px !important;
 }
+
+/* ────────────────────────────────────────────────────────────────
+   NAVIGATION — Nav Mode button, Nav bar, Quick-action chips, Toast
+   ──────────────────────────────────────────────────────────────── */
+
+/* ── Navigate button ── */
+.jarvis-btn--nav {
+  background: rgba(251,191,36,0.08);
+  border-color: rgba(251,191,36,0.22);
+  color: #fde68a;
+}
+.jarvis-btn--nav:hover:not(:disabled) {
+  background: rgba(251,191,36,0.18) !important;
+  border-color: rgba(251,191,36,0.4);
+}
+.jarvis-btn--nav.is-active {
+  background: rgba(251,191,36,0.18);
+  border-color: rgba(251,191,36,0.45);
+  color: #fbbf24;
+  box-shadow: 0 0 10px rgba(251,191,36,0.15);
+}
+
+/* ── Nav bar container ── */
+.jarvis-nav-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 8px 10px;
+  background: rgba(251,191,36,0.04);
+  border: 1px solid rgba(251,191,36,0.12);
+  border-radius: 12px;
+  margin: 0 2px;
+  animation: nav-bar-in 0.18s ease;
+}
+@keyframes nav-bar-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── URL/command input form ── */
+.jarvis-nav-bar__form {
+  display: flex;
+  gap: 6px;
+}
+.jarvis-nav-bar__input {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(251,191,36,0.2);
+  border-radius: 9px;
+  padding: 7px 10px;
+  color: #e8efff;
+  font-size: 12px;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.15s, background 0.15s;
+}
+.jarvis-nav-bar__input:focus {
+  border-color: rgba(251,191,36,0.55);
+  background: rgba(251,191,36,0.05);
+}
+.jarvis-nav-bar__input::placeholder { color: rgba(232,239,255,0.3); }
+
+/* ── Go button ── */
+.jarvis-btn--nav-go {
+  flex: 0 0 auto;
+  background: linear-gradient(135deg, rgba(251,191,36,0.7), rgba(245,158,11,0.8));
+  border: none;
+  border-radius: 9px;
+  color: #0f172a;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 0 14px;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  font-family: inherit;
+}
+.jarvis-btn--nav-go:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+.jarvis-btn--nav-go:disabled { opacity: 0.35; cursor: default; }
+
+/* ── Quick-action chips ── */
+.jarvis-nav-bar__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.jarvis-chip {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 20px;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 10.5px;
+  padding: 4px 9px;
+  font-family: inherit;
+  transition: background 0.12s, border-color 0.12s, color 0.12s, transform 0.1s;
+  white-space: nowrap;
+}
+.jarvis-chip:hover {
+  background: rgba(251,191,36,0.12);
+  border-color: rgba(251,191,36,0.3);
+  color: #fde68a;
+  transform: translateY(-1px);
+}
+.jarvis-chip:active { transform: translateY(0); }
+
+/* ── Navigation Toast ── */
+.jarvis-nav-toast {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2147483002;
+  padding: 8px 18px;
+  border-radius: 24px;
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+  animation: toast-in 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  backdrop-filter: blur(16px);
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(-10px) scale(0.9); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0)      scale(1);   }
+}
+.jarvis-nav-toast--ok {
+  background: rgba(16,185,129,0.88);
+  border: 1px solid rgba(52,211,153,0.5);
+  color: #d1fae5;
+  box-shadow: 0 6px 20px rgba(16,185,129,0.3);
+}
+.jarvis-nav-toast--err {
+  background: rgba(239,68,68,0.88);
+  border: 1px solid rgba(252,165,165,0.4);
+  color: #fee2e2;
+  box-shadow: 0 6px 20px rgba(239,68,68,0.3);
+}

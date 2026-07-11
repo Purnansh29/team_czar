@@ -32,6 +32,29 @@ let reactRoot = null;
 let cachedPage = null;
 let initialAction = null;
 
+// ── Context guard ──────────────────────────────────────────────────────────
+// "Extension context invalidated" is thrown when the service worker has been
+// reloaded but the old content script on this tab is still alive. We catch it
+// everywhere we touch chrome.runtime so the error never bubbles to the
+// console / extensions error page.
+function isContextValid() {
+  try {
+    // Accessing chrome.runtime.id throws when the context is gone.
+    return Boolean(chrome?.runtime?.id);
+  } catch {
+    return false;
+  }
+}
+
+function safePostMessage(msg) {
+  if (!isContextValid()) return;
+  try {
+    chrome.runtime.sendMessage(msg).catch(() => {});
+  } catch {
+    // context invalidated — ignore
+  }
+}
+
 function getPageData() {
   if (!cachedPage) cachedPage = extractPageContent();
   return cachedPage;
@@ -77,7 +100,7 @@ function ensureHost() {
 
 function togglePanel() {
   panelOpen = !panelOpen;
-  chrome.runtime.sendMessage({ type: "JARVIS_PANEL_STATE", open: panelOpen });
+  safePostMessage({ type: "JARVIS_PANEL_STATE", open: panelOpen });
   renderPanel();
 }
 
@@ -97,18 +120,21 @@ function renderPanel() {
       initialAction={initialAction}
       onClose={() => {
         panelOpen = false;
-        chrome.runtime.sendMessage({ type: "JARVIS_PANEL_STATE", open: false });
+        safePostMessage({ type: "JARVIS_PANEL_STATE", open: false });
         renderPanel();
       }}
     />
   );
 }
 
-chrome.runtime.onMessage.addListener((message) => {
-  if (message?.type === "JARVIS_TOGGLE_PANEL") {
-    togglePanel();
-  }
-});
+// Guard: only add listener when context is valid
+if (isContextValid()) {
+  chrome.runtime.onMessage.addListener((message) => {
+    if (message?.type === "JARVIS_TOGGLE_PANEL") {
+      togglePanel();
+    }
+  });
+}
 
 // ---------- Selection toolbar (Explain / Summarize / Translate) ----------
 

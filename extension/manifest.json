@@ -37,7 +37,7 @@
       "description": "Open / close the Jarvis assistant panel"
     }
   },
-  "permissions": ["storage", "activeTab", "scripting"],
+  "permissions": ["storage", "activeTab", "scripting", "tabs", "windows"],
   "host_permissions": ["http://localhost:5000/*", "https://*/*", "http://*/*"],
   "web_accessible_resources": [
     {

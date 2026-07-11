@@ -5,6 +5,8 @@ import Controls from "./components/Controls";
 import { useSpeechRecognition } from "./hooks/useSpeechRecognition";
 import { useSpeechSynthesis } from "./hooks/useSpeechSynthesis";
 import { matchVoiceCommand } from "./lib/voiceCommands";
+import { matchNavCommand, describeNavAction } from "./lib/navCommands";
+import { executeNavCommand } from "./lib/navApi";
 import { askJarvis, translateSelection } from "./lib/api";
 import { getPageState, savePageState } from "../shared/storage";
 import { getLang } from "./lib/languages";
@@ -18,6 +20,9 @@ export default function Panel({ page, onClose, initialAction }) {
   const [activeParagraph, setActiveParagraph] = useState(null);
   const [error, setError]                     = useState(null);
   const [resetDone, setResetDone]             = useState(false);
+  const [navToast, setNavToast]               = useState(null);   // { msg, ok }
+  const navToastTimerRef                       = useRef(null);
+  const [navBarInput, setNavBarInput]          = useState("");
 
   const historyRef = useRef(history);
   historyRef.current = history;
@@ -30,6 +35,12 @@ export default function Panel({ page, onClose, initialAction }) {
   const recognition = useSpeechRecognition({
     onTranscript: (t) => {
       setTranscript(t);
+      // Nav commands take priority over AI commands
+      const navMatch = matchNavCommand(t);
+      if (navMatch) {
+        handleNavCommandRef.current?.(navMatch.action, navMatch.params);
+        return;
+      }
       const action = matchVoiceCommand(t);
       handleVoiceCommandRef.current?.(action, t);
     },
@@ -217,6 +228,35 @@ export default function Panel({ page, onClose, initialAction }) {
     handleVoiceCommandRef.current = handleVoiceCommand;
   }, [handleVoiceCommand]);
 
+  // ── Nav command ref (avoids stale closure in recognition.onTranscript) ──
+  const handleNavCommandRef = useRef(null);
+
+  // ── Navigation toast helper ──
+  const showNavToast = useCallback((msg, ok = true) => {
+    clearTimeout(navToastTimerRef.current);
+    setNavToast({ msg, ok });
+    navToastTimerRef.current = setTimeout(() => setNavToast(null), 3500);
+  }, []);
+
+  // ── Navigation command handler ──
+  const handleNavCommand = useCallback(
+    async (action, params) => {
+      const preview = describeNavAction(action, params);
+      showNavToast(preview);
+      try {
+        const result = await executeNavCommand(action, params);
+        showNavToast(`${result}`, true);
+      } catch (err) {
+        showNavToast(`Failed: ${err.message}`, false);
+      }
+    },
+    [showNavToast]
+  );
+
+  useEffect(() => {
+    handleNavCommandRef.current = handleNavCommand;
+  }, [handleNavCommand]);
+
   const handleToggleMic  = () => recognition.listening ? recognition.stop() : recognition.start();
   const handleSwitchLang = (code) => recognition.switchLanguage(code);
 
@@ -249,11 +289,36 @@ export default function Panel({ page, onClose, initialAction }) {
     e.preventDefault();
     if (!inputValue.trim() || busy) return;
     const text = inputValue.trim();
+    // Nav commands take priority
+    const navMatch = matchNavCommand(text);
+    if (navMatch) {
+      handleNavCommand(navMatch.action, navMatch.params);
+      setInputValue("");
+      setTranscript("");
+      return;
+    }
     const action = matchVoiceCommand(text.toLowerCase());
     action ? handleVoiceCommand(action, text) : runAssistant("chat", text);
     setInputValue("");
     setTranscript("");
   };
+
+  // ── Nav bar quick-submit ──
+  const handleNavBarSubmit = useCallback((text) => {
+    if (!text.trim()) return;
+    const navMatch = matchNavCommand(text.trim());
+    if (navMatch) {
+      handleNavCommand(navMatch.action, navMatch.params);
+    } else {
+      const raw = text.trim();
+      const url = /^https?:\/\//.test(raw)
+        ? raw
+        : /^[\w-]+\./.test(raw)
+          ? `https://${raw}`
+          : `https://www.google.com/search?q=${encodeURIComponent(raw)}`;
+      handleNavCommand("nav_goto", { url });
+    }
+  }, [handleNavCommand]);
 
   const paragraphPreview = useMemo(() => {
     if (activeParagraph == null) return null;
@@ -262,6 +327,13 @@ export default function Panel({ page, onClose, initialAction }) {
 
   return (
     <div className="jarvis-panel" role="dialog" aria-label="Jarvis assistant">
+
+      {/* ── Navigation Toast ── */}
+      {navToast && (
+        <div className={`jarvis-nav-toast ${navToast.ok ? "jarvis-nav-toast--ok" : "jarvis-nav-toast--err"}`}>
+          {navToast.msg}
+        </div>
+      )}
 
       {/* ── Header ── */}
       <header className="jarvis-panel__header">
@@ -357,6 +429,10 @@ export default function Panel({ page, onClose, initialAction }) {
         onStop={tts.stop}
         onSummarize={handleSummarize}
         onTranslate={handleTranslate}
+        navBarInput={navBarInput}
+        onNavBarInput={setNavBarInput}
+        onNavBarSubmit={handleNavBarSubmit}
+        onNavCommand={handleNavCommand}
       />
     </div>
   );
