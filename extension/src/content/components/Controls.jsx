@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import LanguageSelector from "./LanguageSelector";
 
 export default function Controls({
@@ -17,7 +17,27 @@ export default function Controls({
   onStop,
   onSummarize,
   onTranslate,
+  // ── Navigation props ──
+  navBarInput,
+  onNavBarInput,
+  onNavBarSubmit,
+  onNavCommand,
 }) {
+  const [navOpen, setNavOpen] = useState(false);
+  const [navInput, setNavInput] = useState(navBarInput || "");
+
+  const handleNavSubmit = (e) => {
+    e.preventDefault();
+    if (!navInput.trim()) return;
+    onNavBarSubmit?.(navInput.trim());
+    setNavInput("");
+    onNavBarInput?.("");
+  };
+
+  const quickNav = (action, params = {}) => {
+    onNavCommand?.(action, params);
+  };
+
   return (
     <div className="jarvis-controls">
       {/* Row 1: Primary actions */}
@@ -91,7 +111,62 @@ export default function Controls({
         >
           🌐 Translate
         </button>
+
+        {/* Nav Mode toggle */}
+        <button
+          id="jarvis-nav-toggle-btn"
+          className={`jarvis-btn jarvis-btn--nav ${navOpen ? "is-active" : ""}`}
+          onClick={() => setNavOpen((v) => !v)}
+          title="Toggle navigation controls"
+        >
+          🧭 Navigate
+        </button>
       </div>
+
+      {/* ── Nav Bar (collapsible) ── */}
+      {navOpen && (
+        <div className="jarvis-nav-bar">
+          {/* URL / Command input */}
+          <form className="jarvis-nav-bar__form" onSubmit={handleNavSubmit}>
+            <input
+              id="jarvis-nav-input"
+              className="jarvis-nav-bar__input"
+              type="text"
+              value={navInput}
+              onChange={(e) => {
+                setNavInput(e.target.value);
+                onNavBarInput?.(e.target.value);
+              }}
+              placeholder="URL or command: go to youtube, scroll down…"
+              autoComplete="off"
+            />
+            <button
+              id="jarvis-nav-go-btn"
+              className="jarvis-btn jarvis-btn--nav-go"
+              type="submit"
+              disabled={!navInput.trim()}
+            >
+              Go
+            </button>
+          </form>
+
+          {/* Quick-action chips */}
+          <div className="jarvis-nav-bar__chips">
+            <button className="jarvis-chip" onClick={() => quickNav("nav_back")} title="Go back">⬅️ Back</button>
+            <button className="jarvis-chip" onClick={() => quickNav("nav_forward")} title="Go forward">➡️ Fwd</button>
+            <button className="jarvis-chip" onClick={() => quickNav("nav_refresh")} title="Refresh">🔄 Reload</button>
+            <button className="jarvis-chip" onClick={() => quickNav("nav_new_tab")} title="New tab">➕ Tab</button>
+            <button className="jarvis-chip" onClick={() => quickNav("nav_scroll_top")} title="Scroll to top">⏫ Top</button>
+            <button className="jarvis-chip" onClick={() => quickNav("nav_scroll_bottom")} title="Scroll to bottom">⏬ Bottom</button>
+            <button className="jarvis-chip" onClick={() => quickNav("nav_scroll_up")} title="Scroll up">⬆️ Up</button>
+            <button className="jarvis-chip" onClick={() => quickNav("nav_scroll_down")} title="Scroll down">⬇️ Down</button>
+            <button className="jarvis-chip" onClick={() => quickNav("nav_close_tab")} title="Close tab">✖️ Close</button>
+            <button className="jarvis-chip" onClick={() => quickNav("nav_zoom_in")} title="Zoom in">🔍+</button>
+            <button className="jarvis-chip" onClick={() => quickNav("nav_zoom_out")} title="Zoom out">🔍-</button>
+            <button className="jarvis-chip" onClick={() => quickNav("nav_zoom_reset")} title="Reset zoom">🔍=</button>
+          </div>
+        </div>
+      )}
 
       {/* Row 3: Language selector + Always-on toggle */}
       <div className="jarvis-controls__row jarvis-controls__row--settings">
